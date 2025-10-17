@@ -42,7 +42,9 @@ public class ViaggioController {
     public void deleteViaggio(@PathVariable long vId) {
         viserv.deleteViaggio(vId);
     }
-
+    
+    //alla creazione i lo stato del viaggio è in programma, una volta cambiato a completato non è
+    //più possibile riportarlo allo stato precedente
     @PatchMapping("/{vId}")
     public Viaggio setCompletato(@PathVariable long vId) {
         return viserv.changeStatusToCompletato(vId);
