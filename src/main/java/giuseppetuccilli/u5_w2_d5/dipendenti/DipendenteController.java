@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,5 +74,12 @@ public class DipendenteController {
             throw new ValidazioneFallitaExeption(errList);
         }
         return preServ.savePrenotazione(body, dipId);
+    }
+
+    //cambio immagine profile che inizialmente è string vuota
+    @PatchMapping("/{dipId}/avatar")
+    public Dipendente changeAvatar(@PathVariable long dipId, @RequestParam("avatar") MultipartFile file) {
+        System.out.println(file.getOriginalFilename());
+        return dipServ.changeAvatar(dipId, file);
     }
 }

@@ -1,5 +1,7 @@
 package giuseppetuccilli.u5_w2_d5.dipendenti;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import giuseppetuccilli.u5_w2_d5.exeptions.BadRequestExeption;
 import giuseppetuccilli.u5_w2_d5.exeptions.NotFoundExeption;
 import giuseppetuccilli.u5_w2_d5.prenotazioni.Prenotazione;
@@ -9,8 +11,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -19,6 +24,8 @@ public class DipendenteService {
     private DipendenteRepository dipRepo;
     @Autowired
     private PrenotazioneRepository preRepo;
+    @Autowired
+    private Cloudinary imgUploader;
 
     public Page<Dipendente> findAll(int numPg) {
         Pageable pg = PageRequest.of(numPg, 10);
@@ -71,5 +78,18 @@ public class DipendenteService {
         }
         dipRepo.delete(found);
         System.out.println("dipendente eliminato");
+    }
+
+    public Dipendente changeAvatar(long id, MultipartFile file) {
+        Dipendente found = findById(id);
+        try {
+            Map res = imgUploader.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+            String imgUrl = (String) res.get("url");
+            found.setAvatar(imgUrl);
+            dipRepo.save(found);
+            return found;
+        } catch (IOException ex) {
+            throw new BadRequestExeption("errore nell'upload");
+        }
     }
 }
