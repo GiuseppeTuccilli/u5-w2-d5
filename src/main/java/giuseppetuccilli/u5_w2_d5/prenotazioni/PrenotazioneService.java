@@ -27,7 +27,7 @@ public class PrenotazioneService {
     private ViaggioServices viServ;
 
     public Page<Prenotazione> findAll(int numPg) {
-        Pageable pg = PageRequest.of(10, numPg);
+        Pageable pg = PageRequest.of(numPg, 10);
         return preRepo.findAll(pg);
     }
 

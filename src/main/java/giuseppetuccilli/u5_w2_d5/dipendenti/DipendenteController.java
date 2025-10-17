@@ -1,6 +1,9 @@
 package giuseppetuccilli.u5_w2_d5.dipendenti;
 
 import giuseppetuccilli.u5_w2_d5.exeptions.ValidazioneFallitaExeption;
+import giuseppetuccilli.u5_w2_d5.prenotazioni.NewPrenotPayload;
+import giuseppetuccilli.u5_w2_d5.prenotazioni.Prenotazione;
+import giuseppetuccilli.u5_w2_d5.prenotazioni.PrenotazioneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.BindingResult;
@@ -15,6 +18,8 @@ import java.util.List;
 public class DipendenteController {
     @Autowired
     private DipendenteService dipServ;
+    @Autowired
+    private PrenotazioneService preServ;
 
     @GetMapping
     public Page<Dipendente> getDipendenti(@RequestParam(defaultValue = "0") int numPg) {
@@ -55,5 +60,18 @@ public class DipendenteController {
     @DeleteMapping("/{dipId}")
     public void deleteDipendente(@PathVariable long dipId) {
         dipServ.deleteDip(dipId);
+    }
+
+    //la prenotazione la faccio nel controller dipendenti passando l'id del viaggio nel payload della prenotazione
+    @PostMapping("/{dipId}/prenota")
+    public Prenotazione prenota(@PathVariable long dipId, @RequestBody @Validated NewPrenotPayload body, BindingResult valRes) {
+        if (valRes.hasErrors()) {
+            List<String> errList = new ArrayList<>();
+            for (int i = 0; i < valRes.getFieldErrors().size(); i++) {
+                errList.add(valRes.getFieldErrors().get(i).getDefaultMessage());
+            }
+            throw new ValidazioneFallitaExeption(errList);
+        }
+        return preServ.savePrenotazione(body, dipId);
     }
 }
