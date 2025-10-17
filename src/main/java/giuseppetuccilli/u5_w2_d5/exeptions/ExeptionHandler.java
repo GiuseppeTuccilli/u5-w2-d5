@@ -20,4 +20,10 @@ public class ExeptionHandler {
     public ErrorsPayload handleNotFound(NotFoundExeption ex) {
         return new ErrorsPayload(ex.getMessage(), LocalDate.now());
     }
+
+    @ExceptionHandler(ValidazioneFallitaExeption.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorListPayload handleValid(ValidazioneFallitaExeption ex) {
+        return new ErrorListPayload(ex.getMessage(), ex.getMsgList());
+    }
 }
