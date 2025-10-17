@@ -13,4 +13,6 @@ public interface PrenotazioneRepository extends JpaRepository<Prenotazione, Long
     List<Prenotazione> findByDipendente(Dipendente dipendente);
 
     Optional<Prenotazione> findByViaggio(Viaggio viaggio);
+
+   
 }
