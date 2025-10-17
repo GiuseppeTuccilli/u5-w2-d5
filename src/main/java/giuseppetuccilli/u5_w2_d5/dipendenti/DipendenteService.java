@@ -49,6 +49,7 @@ public class DipendenteService {
         Dipendente found = findById(id);
         found.setNome(payload.nome());
         found.setCognome(payload.cognome());
+        found.setUsername();
         if (!payload.email().equals(found.getEmail())) {
             if (dipRepo.existsByEmail(payload.email())) {
                 throw new BadRequestExeption("email già esistente nel database");
