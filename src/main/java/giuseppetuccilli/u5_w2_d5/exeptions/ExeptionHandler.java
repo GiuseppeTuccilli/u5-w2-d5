@@ -26,4 +26,11 @@ public class ExeptionHandler {
     public ErrorListPayload handleValid(ValidazioneFallitaExeption ex) {
         return new ErrorListPayload(ex.getMessage(), ex.getMsgList());
     }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorsPayload genericHandler(Exception ex) {
+        ex.printStackTrace();
+        return new ErrorsPayload("errore generico", LocalDate.now());
+    }
 }

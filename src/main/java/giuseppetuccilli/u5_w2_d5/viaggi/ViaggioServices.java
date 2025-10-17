@@ -79,6 +79,9 @@ public class ViaggioServices {
     //cambia lo stato in completato
     public Viaggio changeStatusToCompletato(long id) {
         Viaggio found = findById(id);
+        if (found.getStato() == StatoViaggio.COMPLETATO) {
+            throw new BadRequestExeption("il viaggio è già stato completato");
+        }
         found.setStato(StatoViaggio.COMPLETATO);
         viRepo.save(found);
         return found;
