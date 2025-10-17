@@ -20,6 +20,8 @@ import java.util.Optional;
 
 @Service
 public class DipendenteService {
+    private static final long MAX_SIZE = 10 * 1024 * 1024; //10 Mb ;
+    private static final List<String> ALLOWED_TYPES = List.of("image/jpg", "image/jpeg", "image/png");
     @Autowired
     private DipendenteRepository dipRepo;
     @Autowired
@@ -82,6 +84,19 @@ public class DipendenteService {
 
     public Dipendente changeAvatar(long id, MultipartFile file) {
         Dipendente found = findById(id);
+        //controllo che il file non sia vuoto
+        if (file.isEmpty()) {
+            throw new BadRequestExeption("il file è vuoto");
+        }
+        //non superi i 10 MB
+        if (file.getSize() > MAX_SIZE) {
+            throw new BadRequestExeption("il file supera la dimensione massima consentita");
+        }
+        //sia di tipo jpg, jpeg o png
+        if (!ALLOWED_TYPES.contains(file.getContentType())) {
+            throw new BadRequestExeption("formato del file non supportato");
+        }
+
         try {
             Map res = imgUploader.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
             String imgUrl = (String) res.get("url");
