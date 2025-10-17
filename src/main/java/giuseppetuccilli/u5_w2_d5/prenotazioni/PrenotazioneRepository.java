@@ -14,5 +14,7 @@ public interface PrenotazioneRepository extends JpaRepository<Prenotazione, Long
 
     Optional<Prenotazione> findByViaggio(Viaggio viaggio);
 
-   
+    boolean existsByViaggio(Viaggio viaggui);
+
+
 }

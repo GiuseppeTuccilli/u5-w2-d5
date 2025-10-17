@@ -49,7 +49,10 @@ public class PrenotazioneService {
         Dipendente dipFound = dipServ.findById(idDip);
         List<Prenotazione> preList = preRepo.findByDipendente(dipFound);
         Viaggio viaggioPren = viServ.findById(payload.idViaggio());
-
+        //controllo che il viaggio non sia prenotato
+        if (preRepo.existsByViaggio(viaggioPren)) {
+            throw new BadRequestExeption("il viaggio è già prenotato");
+        }
         //controllo che il viaggio non sia completato o in data passata
         if (viaggioPren.getStato() == StatoViaggio.COMPLETATO || viaggioPren.getData().isBefore(LocalDate.now())) {
             throw new BadRequestExeption("il viaggio è gia stato completato");
