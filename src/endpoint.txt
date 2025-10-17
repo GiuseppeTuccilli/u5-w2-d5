@@ -1,0 +1,45 @@
+post dipendente
+/dipendenti
+
+get dipendenti
+/dipendenti?numPg=0
+
+get dipendente
+/dipendenti/{dipId}
+
+put dipendente
+/dipendenti/{dipId}
+
+delete dipendente
+/dipendenti/{dipId}
+
+prenota viaggio
+/dipendenti/{dipId}/prenota
+
+cambia avatar
+patch
+/dipendenti/{dipId}/avatar
+
+post viaggi
+/viaggi
+
+get viaggi
+/viaggi
+
+get viaggio
+viaggi/{vId}
+
+delete viaggio
+/viaggi/{vId}
+
+patch cambia stato
+/viaggi/{vId}
+
+get prenotazioni
+/prenotazioni
+
+get prenotazione
+/prenotazioni/{prId}
+
+delete prenotazione
+/prenotazioni/{prId}
