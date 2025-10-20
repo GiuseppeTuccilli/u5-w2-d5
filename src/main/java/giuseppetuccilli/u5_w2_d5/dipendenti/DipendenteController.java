@@ -32,18 +32,6 @@ public class DipendenteController {
         return dipServ.findById(dipId);
     }
 
-    @PostMapping
-    public Dipendente postDipendente(@RequestBody @Validated NewDipPayload body, BindingResult valRes) {
-        if (valRes.hasErrors()) {
-            List<String> errList = new ArrayList<>();
-            for (int i = 0; i < valRes.getFieldErrors().size(); i++) {
-                errList.add(valRes.getFieldErrors().get(i).getDefaultMessage());
-            }
-            throw new ValidazioneFallitaExeption(errList);
-        }
-        return dipServ.saveDipendente(body);
-
-    }
 
     @PutMapping("/{dipId}")
     public Dipendente editDipendente(@PathVariable long dipId, @RequestBody @Validated NewDipPayload body, BindingResult valRes) {

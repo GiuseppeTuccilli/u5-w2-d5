@@ -57,7 +57,6 @@ public class PrenotazioneService {
         if (viaggioPren.getStato() == StatoViaggio.COMPLETATO || viaggioPren.getData().isBefore(LocalDate.now())) {
             throw new BadRequestExeption("il viaggio è gia stato completato");
         }
-
         //controllo che le non ci siano viaggi prenotati per la data
         if (!preList.isEmpty()) {
             for (int i = 0; i < preList.size(); i++) {

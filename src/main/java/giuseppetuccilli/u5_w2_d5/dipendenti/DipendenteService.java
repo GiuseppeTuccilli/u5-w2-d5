@@ -107,4 +107,13 @@ public class DipendenteService {
             throw new BadRequestExeption("errore nell'upload");
         }
     }
+
+    public Dipendente findByEmail(String email) {
+        Optional<Dipendente> found = dipRepo.findByEmail(email);
+        if (found.isPresent()) {
+            return found.get();
+        } else {
+            throw new NotFoundExeption(email);
+        }
+    }
 }

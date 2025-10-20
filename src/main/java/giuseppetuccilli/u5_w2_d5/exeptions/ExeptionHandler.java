@@ -1,5 +1,6 @@
 package giuseppetuccilli.u5_w2_d5.exeptions;
 
+import giuseppetuccilli.u5_w2_d5.security.ErrorsDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -32,5 +33,11 @@ public class ExeptionHandler {
     public ErrorsPayload genericHandler(Exception ex) {
         ex.printStackTrace();
         return new ErrorsPayload("errore generico", LocalDate.now());
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorsDTO handleUnauthorized(UnauthorizedException ex) {
+        return new ErrorsDTO(ex.getMessage());
     }
 }
