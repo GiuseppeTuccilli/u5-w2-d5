@@ -30,4 +30,9 @@ public class JWTTools {
             throw new UnauthorizedException("errori nel token, effetua di nuovo il log-in");
         }
     }
+
+    public long extractId(String token) {
+        return Long.parseLong(Jwts.parser().verifyWith(Keys.hmacShaKeyFor(secret.getBytes())).build()
+                .parseSignedClaims(token).getPayload().getSubject());
+    }
 }

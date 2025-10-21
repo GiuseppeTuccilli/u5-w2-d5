@@ -1,11 +1,16 @@
 package giuseppetuccilli.u5_w2_d5.security;
 
+import giuseppetuccilli.u5_w2_d5.dipendenti.Dipendente;
+import giuseppetuccilli.u5_w2_d5.dipendenti.DipendenteService;
 import giuseppetuccilli.u5_w2_d5.exeptions.UnauthorizedException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -16,6 +21,8 @@ import java.io.IOException;
 public class JWTFilter extends OncePerRequestFilter {
     @Autowired
     private JWTTools jwtTools;
+    @Autowired
+    private DipendenteService dipServ;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -25,6 +32,11 @@ public class JWTFilter extends OncePerRequestFilter {
         }
         String token = header.replace("Bearer ", "");
         jwtTools.verificaToken(token);
+
+        long usId = jwtTools.extractId(token);
+        Dipendente found = dipServ.findById(usId);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(found, null, found.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request, response);
 
     }

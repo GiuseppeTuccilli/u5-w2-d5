@@ -40,4 +40,10 @@ public class ExeptionHandler {
     public ErrorsDTO handleUnauthorized(UnauthorizedException ex) {
         return new ErrorsDTO(ex.getMessage());
     }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED) // 401
+    public ErrorsDTO handleUnauthorizedException(UnauthorizedException ex) {
+        return new ErrorsDTO(ex.getMessage());
+    }
 }
